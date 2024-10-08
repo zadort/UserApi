@@ -31,7 +31,7 @@ namespace UserApi.Controllers
 
             }
         }
-
+        #region
         [HttpGet("{id}")]
         public ActionResult<User> GetById(Guid id)
         {
@@ -46,7 +46,7 @@ namespace UserApi.Controllers
                 return Ok(user);
             }
         }
-
+        #endregion
         [HttpPut("{id}")]
         public ActionResult<User> Put(Guid id, [FromBody] CreateUserDto userDto)
         {
