@@ -32,7 +32,53 @@ namespace UserApi.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        public ActionResult<User> Put(Guid id, [FromBody] CreateUserDto userDto)
+        {
+
+
+            using (var context = new UserDbContext())
+            {
+                var existingUser = context.Users.Find(id);
+               
+                existingUser.Name = userDto.Name;
+
+                context.SaveChanges();
+                return Ok(existingUser);
+            }
+        }
+
         [HttpPost]
-        public 
+        public ActionResult<User> Post([FromBody] CreateUserDto userDto)
+        {
+
+
+            using (var context = new UserDbContext())
+            {
+                var user = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = userDto.Name,
+                    Email = userDto.Email                    
+                };
+
+                context.Users.Add(user);
+                context.SaveChanges();
+
+                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<object> Delete(Guid id)
+        {
+            using (var context = new UserDbContext())
+            {
+                var user = context.Users.Find(id);
+                context.Users.Remove(user);
+                context.SaveChanges();
+                return Ok(new { message = "Törölve!" });
+            }
+        }
     }
 }
