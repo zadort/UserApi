@@ -32,6 +32,21 @@ namespace UserApi.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<User> GetById(Guid id)
+        {
+            using (var context = new UserDbContext())
+            {
+                var user = context.Users.Find(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(user);
+            }
+        }
+
         [HttpPut("{id}")]
         public ActionResult<User> Put(Guid id, [FromBody] CreateUserDto userDto)
         {
