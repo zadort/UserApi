@@ -2,9 +2,6 @@
 {
     public class Dto
     {
-        public record CreatedUserDti(string Name, int Age, bool License)
-        {
-
-        }
+        public record CreatedUserDto(string Name, int Age, bool License);
     }
 }

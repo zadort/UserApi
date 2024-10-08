@@ -4,7 +4,7 @@ namespace UserApi.Models
 {
     public class UserDbContext : DbContext
     {
-        internal object newUser;
+        public DbSet<User> newUser { get; set; } = null;
 
         public UserDbContext()
         {

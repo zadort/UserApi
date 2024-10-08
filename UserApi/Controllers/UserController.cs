@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UserApi.Models;
+using static UserApi.Models.Dto;
 
 namespace UserApi.Controllers
 {
@@ -16,7 +17,7 @@ namespace UserApi.Controllers
         {
             using (var context = new UserDbContext())
             {
-                var users = context.Users.ToList();
+                var users = context.newUser.ToList();
                 return Ok(users);
             }
         }
@@ -26,18 +27,12 @@ namespace UserApi.Controllers
         {
             using (var context = new UserDbContext())
             {
-                var user = context.Users.Find(id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(user);
+                return StatusCode(200, context.newUser.FirstOrDefault(x => x.Id == id));
             }
         }
 
         [HttpPost]
-        public ActionResult<User> Post([FromBody] CreateUserDto userDto)
+        public ActionResult<User> Post( CreatedUserDto userDto)
         {
             if (userDto == null)
             {
@@ -50,7 +45,6 @@ namespace UserApi.Controllers
                 {
                     Id = Guid.NewGuid(),
                     Name = userDto.Name,
-                    Email = userDto.Email
                 };
 
                 context.Users.Add(user);
@@ -61,7 +55,7 @@ namespace UserApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<User> Put(Guid id, [FromBody] CreateUserDto userDto)
+        public ActionResult<User> Put(Guid id, CreatedUserDto userDto)
         {
             if (userDto == null)
             {
@@ -77,7 +71,6 @@ namespace UserApi.Controllers
                 }
 
                 existingUser.Name = userDto.Name;
-                existingUser.Email = userDto.Email;
 
                 context.SaveChanges();
                 return Ok(existingUser);
