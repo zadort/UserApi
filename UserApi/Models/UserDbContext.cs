@@ -4,6 +4,8 @@ namespace UserApi.Models
 {
     public class UserDbContext : DbContext
     {
+        internal object newUser;
+
         public UserDbContext()
         {
 
