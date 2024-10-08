@@ -13,8 +13,13 @@ namespace UserApi.Controllers
         {
             using (var context = new UserDbContext())
             {
-                return StatusCode(201, context.newUser.ToList());
+                return StatusCode(201, NewMethod(context));
             }
+        }
+
+        private static object NewMethod(UserDbContext context)
+        {
+            return context.newUser.ToList();
         }
 
         private ActionResult<List<User>> StatusCode(int v, object value)
@@ -74,7 +79,7 @@ namespace UserApi.Controllers
                 {
                     Id = Guid.NewGuid(),
                     Name = userDto.Name,
-                    Email = userDto.Email                    
+                    Email = userDto.Email
                 };
 
                 context.Users.Add(user);
